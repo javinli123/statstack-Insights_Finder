@@ -65,12 +65,11 @@ JsonPersonReader reports errors for:
 Failures are printed to `std::cerr`, and an empty vector is returned.
 
 ## Build and Run
-
 This project uses **CMake** (3.10+) and **C++17**.
 
 ### Dependencies
-- **LibCurl**: expected at `./libs/curl` (CMake searches this path first)
-- **Google Test (GTest)**: must be installed on your system and discoverable by CMake (`find_package(GTest REQUIRED)`)
+- **LibCurl**: required to build and run the application (expected at `./libs/curl`)
+- **Google Test (GTest)**: required to build and run unit tests (`find_package(GTest REQUIRED)`)
 
 ## Personal Copy
 This repository is a personal working copy maintained by **Javin Li**.  
