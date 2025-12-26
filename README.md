@@ -22,15 +22,15 @@ JsonPersonReader makes an HTTP call to a configurable URL, retrieves JSON data, 
 JsonPersonReader reader(url);
 ```
 
-## HTTP Request - using LibCurl
+### HTTP Request - using LibCurl
 JsonPersonReader uses LibCurl with native Windows SSL support.
 This allows secure HTTPS requests without requiring any manual certificate installation or extra configuration.
 
-## JSON Parsing - using nlohmann/json.hpp
+### JSON Parsing - using nlohmann/json.hpp
 
 The reader parses JSON into typed Person objects using the popular single-header library: [nlohmann/json](https://github.com/nlohmann/json)
 
-## Required JSON Structure
+### Required JSON Structure
 The JSON file must follow this structure:
 ```JSON
 {
@@ -54,7 +54,7 @@ The JSON file must follow this structure:
 ```
 Each JSON object in the people array is converted into a Person instance.
 
-## Error Handling
+### Error Handling
 JsonPersonReader reports errors for:
 
 - Failed CURL initialization
@@ -63,6 +63,14 @@ JsonPersonReader reports errors for:
 - Missing "people" array
 
 Failures are printed to `std::cerr`, and an empty vector is returned.
+
+## Build and Run
+
+This project uses **CMake** (3.10+) and **C++17**.
+
+### Dependencies
+- **LibCurl**: expected at `./libs/curl` (CMake searches this path first)
+- **Google Test (GTest)**: must be installed on your system and discoverable by CMake (`find_package(GTest REQUIRED)`)
 
 ## Personal Copy
 This repository is a personal working copy maintained by **Javin Li**.  
