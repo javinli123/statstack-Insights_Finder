@@ -1,4 +1,4 @@
-# Insight Finders
+# Insights Finder
 The **insight generator algorithm** uses conditional probability to calculate the likelihood of trait B occurring given that trait A is already present. 
 
 The rating represents the strength of the correlation. If there is a group of 50 people, and all 50 people have this correlation, the rating is 100%. If there is a group of 50 people, and only 40 people have this correlation, the rating is 80%. 
