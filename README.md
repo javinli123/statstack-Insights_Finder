@@ -12,6 +12,16 @@ The app generates correlations for the following combinations:
 * an engineering focus of x having a hobby of y
 * an engineering focus of x having a favorite color of y
 
+## Dataset Requirements
+
+To be compatible with the Insight Generator algorithm, input data must conform to a predefined schema and use supported categorical values.
+
+Several attributes (such as region, primary OS, engineering focus, and study time) are treated as **categorical variables** within the algorithm and are expected to map to known, finite sets of values. Data that does not conform to these expected categories may be rejected or ignored during parsing and analysis.
+
+Other attributes (such as hobbies and favorite colors) are treated as free-form strings and are used directly for correlation generation.
+
+Ensuring that input data adheres to these requirements allows the algorithm to produce meaningful and consistent correlation results.
+
 ## HTML Report Generation
 Our Insight Generator also includes a feature that creates an HTML document presenting the findings in an aesthetically pleasing manner. 
 
@@ -75,7 +85,7 @@ This project uses **CMake** (3.10+) and **C++17**.
 This repository is a personal working copy maintained by **Javin Li**.  
 It is used for individual development, experimentation, and testing, and may differ from the official group submission.
 
-## Contributors
+### Contributors
 **Team name:** statstack  
 **Members:** Javin Li, Alyssa Lee, Camille Van Erp, Yanxi Yang
 
