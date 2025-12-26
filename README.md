@@ -69,10 +69,7 @@ This repository is a personal working copy maintained by **Javin Li**.
 It is used for individual development, experimentation, and testing, and may differ from the official group submission.
 
 ## Contributors
-**Team Name:** statstack
-- Javin Li  
-- Alyssa Lee  
-- Camille Van Erp  
-- Yanxi Yang  
+**Team name:** statstack
+**Members:** Javin Li, Alyssa Lee, Camille Van Erp, Yanxi Yang
 
 Boston University — ENG EC 327 (Fall 2025)
