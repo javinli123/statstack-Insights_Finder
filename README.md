@@ -68,9 +68,8 @@ Failures are printed to `std::cerr`, and an empty vector is returned.
 This repository is a personal working copy maintained by **Javin Li**.  
 It is used for individual development, experimentation, and testing, and may differ from the official group submission.
 
-**Team Name:** statstack
-
 ## Contributors
+**Team Name:** statstack
 - Javin Li  
 - Alyssa Lee  
 - Camille Van Erp  
