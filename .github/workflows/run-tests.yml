@@ -1,0 +1,90 @@
+name: Run Tests
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+permissions:
+  contents: read
+  pull-requests: write
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+      # --- Central tests repo (this repo) ---
+      - name: Checkout Central Tests Repo
+        if: ${{ github.actor != 'nektos/act' }}
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Use local central repo (ACT)
+        if: ${{ github.actor == 'nektos/act' }}
+        run: echo "Using local working copy for central tests."
+
+      # --- Tooling / deps ---
+      - name: Install Dependencies
+        shell: bash
+        run: |
+          set -euo pipefail
+          sudo apt-get update
+          # Install CMake, GTest, JQ, LibCurl with OpenSSL
+          sudo apt-get install -y cmake g++ libgtest-dev jq libcurl4-openssl-dev
+          # Build system gtest libs so find_package can work if you use it
+          cd /usr/src/gtest
+          sudo cmake .
+          sudo make -j
+
+      - name: Cache CMake and GTest build
+        uses: actions/cache@v3
+        with:
+          path: |
+            build
+            /usr/src/gtest/lib/libgtest.a
+            /usr/src/gtest/lib/libgtest_main.a
+          key: gtest-${{ runner.os }}-${{ hashFiles('**/CMakeLists.txt') }}
+          restore-keys: |
+            gtest-${{ runner.os }}-
+
+      # --- Configure & Build ---
+      - name: Build Project
+        id: build
+        shell: bash
+        continue-on-error: true
+        run: |
+          set -o pipefail
+          rm -rf build
+          mkdir -p build
+          status=0
+          cmake -S . -B build -DSTUDENT_CODE_DIR="$GITHUB_WORKSPACE/student-code" 2>&1 | tee build/build_log.txt || status=$?
+          if [ "$status" -eq 0 ]; then
+            cmake --build build -j 2>&1 | tee -a build/build_log.txt || status=$?
+          fi
+          echo "status=$status" >> "$GITHUB_OUTPUT"
+
+      # --- Run tests (verbose so we see OK lines if enabled) ---
+      - name: Run Tests
+        id: tests
+        if: ${{ steps.build.outputs.status == '0' }}
+        shell: bash
+        continue-on-error: true
+        run: |
+          set -o pipefail
+          status=0
+          # Verbose CTest to pass through test stdout
+          ctest --test-dir build -V 2>&1 | tee build/test_output.txt || status=$?
+          echo "status=$status" >> "$GITHUB_OUTPUT"
+
+      # --- Post PR comment / labels on GitHub, print locally under act ---
+      - name: Show feedback locally (ACT)
+        if: ${{ always() && github.actor == 'nektos/act' }}
+        shell: bash
+        run: |
+          echo "=== DRY RUN: Would post this comment ==="
+          echo
+          cat pr_comment.md || true
